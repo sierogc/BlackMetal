@@ -111,11 +111,6 @@ function generateText(words, callback){
         span.classList.add("fade-in");
         container.appendChild(span);
 
-        // Effetti casuali a partire dalla quarta parola
-        if(index >= 3){
-            container.querySelectorAll("span").forEach(w => randomEffect(w));
-        }
-
         // Scroll se necessario
         if(container.scrollHeight > window.innerHeight){
             window.scrollTo({ top: container.scrollHeight - window.innerHeight, behavior: "smooth" });
