@@ -44,7 +44,6 @@
   .highlight-blue { background-color: #66b3ff; color: black; }
   .highlight-indigo { background-color: #9999ff; color: black; }
   .highlight-violet { background-color: #e580ff; color: black; }
-  .highlight-white { background-color: #ffffff; color: black; }
 
   .red { color: #ff4d4d; }
   .orange { color: #ffa64d; }
@@ -89,7 +88,7 @@ function randomEffect(wordEl){
     const effects = ["underline","italic","strikethrough",
         "highlight-red","highlight-orange","highlight-yellow",
         "highlight-green","highlight-blue","highlight-indigo",
-        "highlight-violet","highlight-white",""];
+        "highlight-violet",""];
     const eff = effects[Math.floor(Math.random() * effects.length)];
     if(eff) wordEl.classList.add(eff);
 }
