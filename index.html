@@ -17,7 +17,7 @@
   }
 
   #text-container {
-    max-width: 65%;
+    max-width: 75%;
     font-size: 8vw;
     line-height: 1.2;
     hyphens: none;
@@ -26,6 +26,19 @@
     text-align-last: right;    /* ultima riga a destra */
     transition: opacity 3s ease;
   }
+  @media screen and (max-width: 768px) {
+  #text-container {
+    max-width: 90%;   /* testo più largo su mobile */
+    font-size: 11vw;  /* eventualmente aumenta leggermente la dimensione */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #text-container {
+    max-width: 95%;   /* quasi tutto lo schermo sui telefoni piccoli */
+    font-size: 12vw;
+  }
+}
 
   .underline { text-decoration: underline; }
   .italic { font-style: italic; }
