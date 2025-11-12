@@ -23,6 +23,7 @@ body {
   text-align: justify;
   text-align-last: right;
   color: white;
+  direction: rtl; /* testo da destra verso sinistra */
 }
 
 @media screen and (max-width: 768px) { #text-container { max-width: 90%; font-size: 11vw; } }
@@ -70,14 +71,15 @@ const textColors = ["red","orange","yellow","green","blue","indigo","violet","wh
 const highlightColors = ["highlight-red","highlight-orange","highlight-yellow","highlight-green","highlight-blue","highlight-indigo","highlight-violet","highlight-white","highlight-pink","highlight-cyan","highlight-lime","highlight-gold"];
 
 let container = document.getElementById("text-container");
-let delay = 400;          // tempo tra parole
-let activeTime = 15000;   // tempo testo visibile
-let blackPause = 6000;    // pausa nera
+let delay = 400;          // tempo tra una parola e l'altra nella generazione
+let animationSpeed = 700; // velocità animazione ciclica
+let activeTime = 15000;   // durata testo visibile
 let lastColor = null;
 let previousOrders = [];
 let firstCycle = true;
-let wordIntervals = [];   // intervalli animazioni per ogni parola
+let wordIntervals = [];
 
+// Applica effetti casuali
 function randomEffect(wordEl){
     wordEl.classList.remove(...textColors, ...highlightColors, "underline","italic","strikethrough");
     let color;
@@ -85,15 +87,17 @@ function randomEffect(wordEl){
     while(color === lastColor);
     lastColor = color;
     wordEl.classList.add(color);
+
     let validHighlights = highlightColors.filter(h => !h.includes(color));
     const highlight = validHighlights[Math.floor(Math.random() * validHighlights.length)];
     if(highlight) wordEl.classList.add(highlight);
+
     const effects = ["underline","italic","strikethrough",""];
     const eff = effects[Math.floor(Math.random() * effects.length)];
     if(eff) wordEl.classList.add(eff);
 }
 
-// Funzione principale: genera parola per parola
+// Genera parola per parola
 function generateText(words, callback){
     container.innerHTML = "";
     wordIntervals.forEach(i => clearInterval(i));
@@ -111,7 +115,7 @@ function generateText(words, callback){
 
         // Animazione ciclica immediata
         randomEffect(span);
-        const interval = setInterval(() => randomEffect(span), 400);
+        const interval = setInterval(() => randomEffect(span), animationSpeed);
         wordIntervals.push(interval);
 
         // Scroll automatico
@@ -128,11 +132,13 @@ function generateText(words, callback){
     addWord();
 }
 
+// Ferma tutte le animazioni
 function stopAllWordEffects(){
     wordIntervals.forEach(i => clearInterval(i));
     wordIntervals = [];
 }
 
+// Mescola array evitando ripetizioni
 function shuffleArray(array){
     let newArr, alreadyUsed;
     do {
@@ -143,18 +149,35 @@ function shuffleArray(array){
     return newArr;
 }
 
+// Effetto backspace: cancella parola per parola da destra verso sinistra
+function deleteText(callback){
+    const words = Array.from(container.querySelectorAll("span"));
+    let index = words.length - 1;
+
+    function removeWord(){
+        if(index < 0){
+            callback();
+            return;
+        }
+        words[index].remove();
+        index--;
+        setTimeout(removeWord, delay);
+    }
+
+    removeWord();
+}
+
+// Ciclo infinito
 function startCycle(){
     const words = originalText.split(" ");
     const sequence = firstCycle ? words : shuffleArray(words);
     generateText(sequence, () => {
         setTimeout(() => {
             stopAllWordEffects();
-            container.style.opacity = 0;
-            setTimeout(() => {
-                container.style.opacity = 1;
+            deleteText(() => {
                 firstCycle = false;
                 startCycle();
-            }, blackPause);
+            });
         }, activeTime);
     });
 }
