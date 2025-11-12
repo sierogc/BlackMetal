@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Testo Animato Giustificato</title>
+<title>Black Metal</title>
 <style>
   body {
     margin: 0;
@@ -24,12 +24,21 @@
     word-wrap: normal;
     text-align: justify;       /* giustificato */
     text-align-last: right;    /* ultima riga a destra */
-    transition: opacity 1.5s ease;
+    transition: opacity 3s ease;
   }
 
   .underline { text-decoration: underline; }
   .italic { font-style: italic; }
   .strikethrough { text-decoration: line-through; }
+  .highlight-red { background-color: #ff4d4d; color: black; }
+  .highlight-orange { background-color: #ffa64d; color: black; }
+  .highlight-yellow { background-color: #ffff66; color: black; }
+  .highlight-green { background-color: #80ff80; color: black; }
+  .highlight-blue { background-color: #66b3ff; color: black; }
+  .highlight-indigo { background-color: #9999ff; color: black; }
+  .highlight-violet { background-color: #e580ff; color: black; }
+  .highlight-white { background-color: #ffffff; color: black; }
+  .highlight-black { background-color: #000000; color: white; }
 
   .red { color: #ff4d4d; }
   .orange { color: #ffa64d; }
@@ -40,7 +49,7 @@
   .violet { color: #e580ff; }
   .white { color: #ffffff; }
 
-  .fade-in { opacity: 0; animation: fade 0.6s forwards; }
+  .fade-in { opacity: 0; animation: fade 0.2s forwards; }
   @keyframes fade { to { opacity: 1; } }
 </style>
 </head>
@@ -51,7 +60,8 @@
 const originalText = "Questo è un test avanzato: le parole appariranno parola per parola, resteranno visibili, cambieranno colore ed effetto, e poi la frase si mixerà e ricomincerà.";
 const rainbowColors = ["red","orange","yellow","green","blue","indigo","violet","white"];
 let container = document.getElementById("text-container");
-let delay = 500;
+let delay = 900;
+let effectDelay = 1400;  
 let lastColor = null;
 
 // Applica effetti casuali a una parola
@@ -64,7 +74,10 @@ function randomEffect(wordEl){
     lastColor = color;
     wordEl.classList.add(color);
 
-    const effects = ["underline","italic","strikethrough",""];
+    const effects = ["underline","italic","strikethrough",
+                 "highlight-red","highlight-orange","highlight-yellow",
+                 "highlight-green","highlight-blue","highlight-indigo",
+                 "highlight-violet","highlight-white","highlight-black",""];
     const eff = effects[Math.floor(Math.random()*effects.length)];
     if(eff) wordEl.classList.add(eff);
 }
@@ -119,8 +132,8 @@ function startCycle(){
                 generateText(shuffled, () => {
                     startCycle();
                 });
-            }, 1500);
-        }, 2000);
+            }, 3000);
+        }, 3000);
     });
 }
 
